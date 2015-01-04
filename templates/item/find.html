@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Foodiepedia</title>
+		<title>Find | Foodiepedia</title>
 		<link rel="stylesheet" type="text/css" href="/stylesheets/base.css">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/login.css">
@@ -42,35 +42,16 @@
 
 		<div class="page-container">
 			<div class="content">
-				<div class="vertical-container">
-					<div class="row">
-						<div class="col-12" id="dot-navbar">
-							<div id="content-paddle">
-								{% if isAuthenticated == True %}
-								<p>item</p>
-								{% else %}
-								<p>{{ name }}</p>
-								{% endif %}
-							</div>
-							<div class="dot-navbar dot-fillup">
-								<ul>
-									<li class="current"><a href="#home">Home</a></li>
-									<li><a href="">Search item</a></li>
-									<li><a href="">Find</a></li>
-									<li><a href="">Discover</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+				<form method="post">
+					<input type="text" name="item_name" value="{{ item_name }}" placeholder="search item" autocomplete="off">
+					<div class="error">{{ error }}</div>
+					<input type="submit">
+				</form>
 
-			<div>
-				<p>test</p>
-			</div>
-		</div>
+			</div><!-- End of content -->
+		</div><!-- End of page-container -->
 
-	</body>
-</html>
+
+
 
 

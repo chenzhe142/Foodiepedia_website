@@ -1,0 +1,9 @@
+indexes:
+
+- kind: Item
+  properties:
+  - name: item_name
+  - name: created
+  - name: item_description
+  - name: item_photo_link
+    direction: desc

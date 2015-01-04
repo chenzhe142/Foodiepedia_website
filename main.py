@@ -131,7 +131,8 @@ class Index(BaseHandler):
 		username = ''
 		if isAuthenticated:
 			# get_current_username CANNOT FUNCTION 
-			username = self.get_current_username()
+			# username = self.get_current_username()
+			username = 'show_username'
 		
 		name = 'apple'
 
@@ -153,21 +154,14 @@ config = {
 }
 
 application = webapp2.WSGIApplication([('/', Index),
-									   # ('/login', 'handlers.login.login.LoginHandler'),
-
-									   # ('/login', LoginHandler),
-									   # ('/signup', SignupHandler),
-									   # ('/logout', LogoutHandler),
 									   webapp2.Route(r'/login', handler='handlers.user.user.LoginHandler', name='login'),
 									   webapp2.Route(r'/logout', handler='handlers.user.user.LogoutHandler', name='logout'),
 									   webapp2.Route(r'/login', handler='handlers.user.user.SecureRequestHandler', name='secure'),
-									   # webapp2.Route(r'/secure/', handler=CreateUserHandler, name='create-user'),
-									   # ('/login', 'handlers.user.user.LoginHandler'),
 									   ('/signup', 'handlers.user.user.CreateUserHandler'),
-									   # ('/signup', 'handlers.user.user.SignupHandler'),
-									   # ('/logout', 'handlers.logout.logout.Logout'),
-									   # ('/post_item', 'handlers.user.user.SecureRequestHandler'),
-									   ('/post_item', 'handlers.post_item.post_item.Post_item'),
+
+									   ('/discover','handlers.discover.discover.Discover'),
+									   ('/find', 	  'handlers.item.item_post_find.Find'),
+									   ('/post_item', 'handlers.item.item_post_find.Post_item'),
 
 									   ('/item/(\d+)', 'handlers.post_item.post_item.Permalink')
 									   ], 

@@ -20,7 +20,7 @@ from google.appengine.ext import db
 ################################################################################################
 
 template_dir = os.path.join(os.path.dirname(__file__), os.path.pardir, 
-							os.path.pardir, 'templates', 'post_item')
+							os.path.pardir, 'templates', 'item')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
 
 def user_required(handler):
@@ -57,6 +57,25 @@ class BaseHandler(webapp2.RequestHandler):
 
 	def render(self, template, **kw):
 		self.write(self.render_str(template, **kw))	
+
+	def check_authenticated(self):
+		auth = self.auth
+		if not auth.get_user_by_session():
+			isAuthenticated = False
+		else:
+			isAuthenticated = True
+
+		return isAuthenticated
+
+	def get_current_username(self):
+		# PROBLEM: CANNOT FIND CURRENT USER'S NAME
+		u = self.auth.get_user_by_session()
+		userid = u['user_id']
+		username = auth_models.User.get_by_auth_id(str(u['user_id']))
+		if username is None:
+			username = ''
+
+		return username
 
 		
 	def dispatch(self):
@@ -143,7 +162,27 @@ class Permalink(PostShowPage):
 		s = Item.get_by_id(int(item_id))
 		self.render("show_item.html", items=[s])
 
+################################################################################################
+#                Find(search) page Handler	 				  	                               #
+################################################################################################
+class Find(BaseHandler):
+	def get(self):
+		isAuthenticated = self.check_authenticated
+		username = ''
+		if isAuthenticated:
+			# get_current_username CANNOT FUNCTION 
+			# username = self.get_current_username()
+			username = 'show_username'
+		self.render('find.html', isAuthenticated=isAuthenticated, username=username)
 
+	def post(self, item_name="", item_description="", item_photo_link="", error=""):
+		item_name = self.request.get('item_name')
+		items = db.GqlQuery("SELECT * FROM Item WHERE item_name=:1", item_name)
+
+		self.render("show_item.html", item_name=item_name, 
+					item_description=item_description, 
+					item_photo_link=item_photo_link, 
+					error=error, items=items)
 
 
 
