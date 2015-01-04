@@ -14,7 +14,7 @@ from google.appengine.ext import db
 #							SET UP jinja2 working path, Handler    							   #
 ################################################################################################
 
-template_dir = os.path.join(os.path.dirname(__file__), os.path.pardir, os.path.pardir, 'templates', 'signup')
+template_dir = os.path.join(os.path.dirname(__file__), os.path.pardir, os.path.pardir, 'templates', 'user')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
 
 class Handler(webapp2.RequestHandler):
