@@ -1,7 +1,10 @@
+<html>
 
-{% extends "base.html" %}
+<head>
+	<title>Sign Up</title>
+	<h1>User Sign Up</h1>
+</head>
 
-{% block content %}
 
 <form method="post">
 	<table>
@@ -10,18 +13,6 @@
 				<td class="label" style="text-align: right">Username</td>
 				<td><input type="text" name="username" value="{{ username }}"></td>
 				<td class="error">{{ error_username }}</td>
-			</tr>
-
-			<tr>
-				<td class="label" style="text-align: right">Name</td>
-				<td><input type="text" name="name" value="{{ name }}"></td>
-				<td class="error">{{ error_name }}</td>
-			</tr>
-
-			<tr>
-				<td class="label" style="text-align: right">Last name</td>
-				<td><input type="text" name="lastname" value="{{ lastname }}"></td>
-				<td class="error">{{ error_lastname }}</td>
 			</tr>
 
 			<tr>
@@ -47,4 +38,5 @@
 
 	<input type="submit">
 </form>
-{% endblock %}
+
+</html>
