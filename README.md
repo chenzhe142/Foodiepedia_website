@@ -7,3 +7,6 @@ http://foodie-pedia.appspot.com/
 
 2014.12.30
 - Testing user authentication function.
+
+2015.1.3
+- Finish building user authentication system.
