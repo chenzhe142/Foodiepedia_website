@@ -17,5 +17,5 @@ http://foodie-pedia.appspot.com/
 
 2015.1.4
 - 'Find' page now can do a simple search on Datastore Item. Modification need to be done.
-- Available now: user can signup, login, and then post new items when user is mainting login status.
+- Available now: user can signup, login, and then post new items when user is maintaining login status.
 - Homepage UI and coloring need re-design.
