@@ -47,15 +47,18 @@ class BaseHandler(webapp2.RequestHandler):
 		return isAuthenticated
 
 
-	# def dispatch(self):
-	# 	"""
-	# 		Save the sessions for preservation across requests
-	# 	"""
-	# 	try:
-	# 		response = super(BaseHandler, self).dispatch()
-	# 		self.response.write(response)
-	# 	finally:
-	# 		self.session_store.save_sessions(self.response)
+	def dispatch(self):
+		"""
+			Save the sessions for preservation across requests
+		"""
+		self.session_store = sessions.get_store(request=self.request)
+		try:
+			# response = super(BaseHandler, self).dispatch()
+			# self.response.write(response)
+			webapp2.RequestHandler.dispatch(self)
+		finally:
+			
+			self.session_store.save_sessions(self.response)
  
 	@webapp2.cached_property
 	def auth(self):
