@@ -96,6 +96,7 @@ def valid_email(email):
 ################################################################################################
 class LoginHandler(BaseHandler):
 	def get(self):
+		isAuthenticated = False
 		isAuthenticated = self.check_authenticated()
 		if isAuthenticated == True:
 			self.redirect('/')
@@ -125,6 +126,7 @@ class LoginHandler(BaseHandler):
 ################################################################################################
 class CreateUserHandler(BaseHandler):
 	def get(self):
+		isAuthenticated = False
 		isAuthenticated = self.check_authenticated()
 		if isAuthenticated == True:
 			self.redirect('/')
@@ -144,8 +146,8 @@ class CreateUserHandler(BaseHandler):
 		password = self.request.POST.get('password')
 		verify_password = self.request.POST.get('verify_password')
 
-		firstname = self.request.POST.get('firstname')
-		lastname = self.request.POST.get('lastname')
+		# firstname = self.request.POST.get('firstname')
+		# lastname = self.request.POST.get('lastname')
 
 		email = self.request.POST.get('email')
 
@@ -175,7 +177,7 @@ class CreateUserHandler(BaseHandler):
 			# Passing password_raw=password so password will be hashed
 			# Returns a tuple, where first value is BOOL. If True ok, If False no new user is created
 			user = self.auth.store.user_model.create_user(username, password_raw=password, email_address=email,
-														  name=firstname, last_name=lastname)
+														  name=username)
 			if not user[0]: #user is a tuple
 				params['error_username'] = 'This username is taken. Please try another one.'
 				self.render('signup.html', **params)

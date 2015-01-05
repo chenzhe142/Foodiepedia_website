@@ -1,44 +1,7 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Find | Foodiepedia</title>
-		<link rel="stylesheet" type="text/css" href="/stylesheets/base.css">
-		<link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
-		<link rel="stylesheet" type="text/css" href="/stylesheets/login.css">
 
-		<link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
+{% extends "base.html" %}
 
-
-
-	</head><!-- End of head -->
-
-	<body class="main-body">
-		<header>
-			<table style="width:100%" cellspacing="0" cellpadding="0">
-				<tr id="head-navbar">
-					<td id="logo">
-						<ul>
-							<li><a href="/">Foodiepedia</a></li>
-						</ul>
-					</td>
-					<td id="navbar-button">
-						<ul>
-							<li><a href="/find">Find</a></li>
-							<li><a href="/discover">Discover</a></li>
-							{% if isAuthenticated == False %}
-								<li><a href="/signup">Sign up</a></li> 
-								<li><a href="/login">Login</a></li>
-							{% else %}
-								<li><a href="/uesr_profile">{{ username }}</a></li>
-								<li><a href="/logout">Log out</a></li> 
-							{% endif %}
-							
-						</ul>
-					</td>
-				</tr><!-- End of head-navbar -->
-			</table>
-		</header><!-- End of header -->
+{% block content %}
 
 		<div class="page-container">
 			<div class="content">
@@ -52,6 +15,6 @@
 		</div><!-- End of page-container -->
 
 
-
+{% endblock %}
 
 

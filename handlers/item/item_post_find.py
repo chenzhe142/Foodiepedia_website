@@ -105,21 +105,38 @@ class Item(db.Model):
 ################################################################################################
 class Post_item(BaseHandler):
 	def render_post(self, item_name="", item_description="", item_photo_link="", error=""):
+		page_title = 'Post | Foodiepedia'
 		items = db.GqlQuery("SELECT * FROM Item ORDER BY created DESC")
 
-		self.render("post_item.html", item_name=item_name, 
-									  item_description=item_description, 
-									  item_photo_link=item_photo_link, 
-					error=error, items=items)
+		isAuthenticated = False
+		isAuthenticated = self.check_authenticated()
 
-	@user_required
+		if not isAuthenticated:
+			self.redirect('/')
+		else:
+			username = self.get_current_username()
+			self.render("post_item.html", item_name=item_name, 
+										  item_description=item_description, 
+									  	  item_photo_link=item_photo_link, 
+										  error=error, items=items, page_title=page_title)
+
 	def get(self):
-		self.render_post()
+		page_title = 'Post | Foodiepedia'
+		isAuthenticated = False
+		isAuthenticated = self.check_authenticated()
+		if not isAuthenticated:
+			self.redirect('/')
+		else:
+			username = self.get_current_username()
+			self.render('post_item.html',page_title=page_title,username=username)
 
 	def post(self):
 		item_name = self.request.get('item_name')
 		item_description = self.request.get('item_description')
 		item_photo_link = self.request.get('item_photo_link')
+
+		username = self.get_current_username()
+		page_title = 'Post | Foodiepedia'
 
 		if item_name and item_description:
 			i = Item(item_name=item_name, item_description=item_description, item_photo_link=item_photo_link)
@@ -128,16 +145,21 @@ class Post_item(BaseHandler):
 			self.redirect("/item/%d" % i_key.id())
 		else:
 			error = "please enter both item name and item description!"
-			self.render_post(item_name, item_description, error)
+			self.render('post_item.html',item_name=item_name, 
+										item_description=item_description,
+										item_photo_link=item_photo_link, 
+										error=error, username=username,
+										page_title=page_title)
 
 class PostShowPage(BaseHandler):
 	def render_post_show(self, item_name="", item_description="", item_photo_link="", error=""):
 		items = db.GqlQuery("SELECT * FROM Item ORDER BY created DESC")
+		page_title = item_name + ' | Foodiepedia'
 
 		self.render("show_item.html", item_name=item_name, 
 					item_description=item_description, 
 					item_photo_link=item_photo_link, 
-					error=error, items=items)
+					error=error, items=items, page_title=page_title)
 
 	def get(self):
 		#handle html content
@@ -145,7 +167,7 @@ class PostShowPage(BaseHandler):
 
 class Permalink(PostShowPage):
 	def get(self, item_id):
-		isAuthenticated = self.check_authenticated
+		isAuthenticated = self.check_authenticated()
 		username = ''
 		if isAuthenticated:
 			# get_current_username CANNOT FUNCTION 
@@ -159,21 +181,22 @@ class Permalink(PostShowPage):
 ################################################################################################
 class Find(BaseHandler):
 	def get(self):
-		isAuthenticated = self.check_authenticated
+		page_title = 'Find | Foodiepedia'
+		isAuthenticated = self.check_authenticated()
 		username = ''
 		if isAuthenticated:
 			# get_current_username CANNOT FUNCTION 
 			username = self.get_current_username()
-		self.render('find.html', isAuthenticated=isAuthenticated, username=username)
+		self.render('find.html', isAuthenticated=isAuthenticated, username=username, page_title=page_title)
 
 	def post(self, item_name="", item_description="", item_photo_link="", error=""):
 		item_name = self.request.get('item_name')
 		items = db.GqlQuery("SELECT * FROM Item WHERE item_name=:1", item_name)
-
+		page_title = item_name + ' | Foodiepedia'
 		self.render("show_item.html", item_name=item_name, 
 					item_description=item_description, 
 					item_photo_link=item_photo_link, 
-					error=error, items=items)
+					error=error, items=items, page_title=page_title)
 
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Foodiepedia</title>
+		<title>{{ page_title }}</title>
 		<link rel="stylesheet" type="text/css" href="/stylesheets/base.css">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
 		<link rel="stylesheet" type="text/css" href="/stylesheets/login.css">
@@ -41,33 +41,8 @@
 		</header><!-- End of header -->
 
 		<div class="page-container">
-			<div class="content">
-				<div class="vertical-container">
-					<div class="row">
-						<div class="col-12" id="dot-navbar">
-							<div id="content-paddle">
-								{% if isAuthenticated == True %}
-								<p>item</p>
-								{% else %}
-								<p>name</p>
-								{% endif %}
-							</div>
-							<div class="dot-navbar dot-fillup">
-								<ul>
-									<li class="current"><a href="#home">Home</a></li>
-									<li><a href="">Search item</a></li>
-									<li><a href="">Find</a></li>
-									<li><a href="">Discover</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div>
-				<p>test</p>
-			</div>
+			{% block content %}
+			{% endblock %}
 		</div>
 
 		<footer>
@@ -75,24 +50,24 @@
 				<tr >
 					<td id="footer-button">
 						<ul >
-							<li><a href="">About</a></li>
-							<li><a href="">Advertising</a></li>
-							<li><a href="">Contact us</a></li>
-							<li><a href="">API</a></li>
+							<li><a href="/about">About</a></li>
+							<li><a href="/advertising">Advertising</a></li>
+							<li><a href="/contact_us">Contact us</a></li>
+							<li><a href="/api">API</a></li>
 						</ul>
 					</td>
 					<td id="footer-icon">
 						<ul>
-							<li><a href="" target="_blank">
-								<img src="static/images/instagram.png" style="width:32px;height:32px"/>
+							<li><a href="http://instagram.com/142cz/" target="_blank">
+								<img src="/static/images/instagram.png" style="width:32px;height:32px"/>
 								</a>
 							</li>
-							<li><a href="" target="_blank">
-								<img src="static/images/github.png" style="width:32px;height:32px"/>
+							<li><a href="https://github.com/chenzhe142" target="_blank">
+								<img src="/static/images/github.png" style="width:32px;height:32px"/>
 								</a>
 							</li>
-							<li><a href="" target="_blank">
-								<img src="static/images/email.png" style="width:32px;height:32px"/>
+							<li><a href="mailto:zhechen2014@u.northwestern.edu" target="_blank">
+								<img src="/static/images/email.png" style="width:32px;height:32px"/>
 								</a>
 							</li>
 						</ul>
@@ -105,7 +80,7 @@
 				</tr>
 			</table>
 		</footer><!-- End of footer -->
+
+
 	</body>
 </html>
-
-

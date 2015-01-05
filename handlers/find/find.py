@@ -2,6 +2,8 @@ import os
 import jinja2
 import webapp2
 
+import webapp2_extras.appengine.auth.models as auth_models
+
 from webapp2_extras import auth
 from webapp2_extras import sessions
 
@@ -80,12 +82,11 @@ class BaseHandler(webapp2.RequestHandler):
 ################################################################################################
 class Find(BaseHandler):
 	def get(self):
-		isAuthenticated = self.check_authenticated
+		isAuthenticated = self.check_authenticated()
 		username = ''
 		if isAuthenticated:
 			# get_current_username CANNOT FUNCTION 
-			# username = self.get_current_username()
-			username = 'show_username'
+			username = self.get_current_username()
 		self.render('find.html', isAuthenticated=isAuthenticated, username=username)
 
 	def post(self):

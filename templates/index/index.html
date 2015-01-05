@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+				<div class="vertical-container">
+					<div class="row">
+						<div class="col-12" id="dot-navbar">
+							<div id="content-paddle">
+								{% if isAuthenticated == True %}
+								<a href="/post_item">add new item</a>
+								{% else %}
+								<p>Welcome!</p>
+								{% endif %}
+								<br>
+								<br>
+								<div class="show_all_item">
+									<form>
+										{% for item in items %}
+											<div class="item">
+												<hr>
+												<div class="item_name">{{ item.item_name }}</div>
+												<div class="created_time">{{ item.created }}</div>
+												<div class="item_description">{{ item.item_description }}</div>
+												<div class="item_photo_link">{{ item.item_photo_link }}</div>
+											</div>
+										{% endfor %}
+									</form>
+								</div>
+							</div>
+
+							<div class="dot-navbar dot-fillup">
+								<ul>
+									<li class="current"><a href="#home">Home</a></li>
+									<li><a href="">Search item</a></li>
+									<li><a href="">Find</a></li>
+									<li><a href="">Discover</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+			</div>
+{% endblock %}
+			
