@@ -30,7 +30,7 @@
 								<li><a href="/signup">Sign up</a></li> 
 								<li><a href="/login">Login</a></li>
 							{% else %}
-								<li><a href="/uesr_profile">{{ username }}</a></li>
+								<li><a href="{{ user_profile_link }}">{{ username }}</a></li>
 								<li><a href="/logout">Logout</a></li> 
 							{% endif %}
 							

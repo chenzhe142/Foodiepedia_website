@@ -47,15 +47,15 @@ class BaseHandler(webapp2.RequestHandler):
 		return isAuthenticated
 
 
-	def dispatch(self):
-		"""
-			Save the sessions for preservation across requests
-		"""
-		try:
-			response = super(BaseHandler, self).dispatch()
-			self.response.write(response)
-		finally:
-			self.session_store.save_sessions(self.response)
+	# def dispatch(self):
+	# 	"""
+	# 		Save the sessions for preservation across requests
+	# 	"""
+	# 	try:
+	# 		response = super(BaseHandler, self).dispatch()
+	# 		self.response.write(response)
+	# 	finally:
+	# 		self.session_store.save_sessions(self.response)
  
 	@webapp2.cached_property
 	def auth(self):
@@ -96,12 +96,13 @@ def valid_email(email):
 ################################################################################################
 class LoginHandler(BaseHandler):
 	def get(self):
+		page_title = 'Login | Foodiepedia'
 		isAuthenticated = False
 		isAuthenticated = self.check_authenticated()
 		if isAuthenticated == True:
 			self.redirect('/')
 		else:
-			self.render("login.html")
+			self.render("login.html", page_title=page_title)
  
 	def post(self):
 		"""
@@ -126,12 +127,13 @@ class LoginHandler(BaseHandler):
 ################################################################################################
 class CreateUserHandler(BaseHandler):
 	def get(self):
+		page_title = 'Signup | Foodiepedia'
 		isAuthenticated = False
 		isAuthenticated = self.check_authenticated()
 		if isAuthenticated == True:
 			self.redirect('/')
 		else:
-			self.render("signup.html")
+			self.render("signup.html", page_title=page_title)
  
 	def post(self):
 		"""

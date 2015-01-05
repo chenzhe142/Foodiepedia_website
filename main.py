@@ -77,8 +77,9 @@ class Item(db.Model):
 class IndexHandler(BaseHandler):
 	def render_index_item(self, page_title="", username="", isAuthenticated=""):
 		items = db.GqlQuery("SELECT * FROM Item")
+		user_profile_link = '/' + username
 		self.render('index.html', page_title=page_title, username=username, isAuthenticated=isAuthenticated,
-					items=items)
+					items=items, user_profile_link=user_profile_link)
 
 	def get(self):
 		page_title = 'Foodiepedia'
