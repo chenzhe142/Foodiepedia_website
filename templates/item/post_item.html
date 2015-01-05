@@ -1,31 +1,28 @@
-
-
 {% extends "base.html" %}
 {% block content %}
 
-		<form method="post">
-			<label>
-				<div>item name</div>
-				<input type="text" name="item_name" value="{{ item_name }}">
-			</label>
+				<form method="post">
+					<label>
+						<div>item name</div>
+						<input type="text" name="item_name" value="{{ item_name }}">
+					</label>
 
-			<label>
-				<div>photo link</div>
-				<input type="text" name="item_photo_link" value="{{ item_photo_link }}">
-			</label>
+					<label>
+						<div>photo link</div>
+						<input type="text" name="item_photo_link" value="{{ item_photo_link }}">
+					</label>
 
-			<label>
-				<div>description</div>
-				<textarea type="text" name="item_description">{{ item_description }}</textarea>
-			</label>
+					<label>
+						<div>description</div>
+						<textarea type="text" name="item_description">{{ item_description }}</textarea>
+					</label>
 
 
 
-			<div class="error">{{ error }}</div>
+					<div class="error">{{ error }}</div>
 
-			<input type="submit">
+					<input type="submit">
 
-		</form>
-
+				</form>
 
 {% endblock %}

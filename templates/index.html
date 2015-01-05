@@ -31,7 +31,7 @@
 								<li><a href="/login">Login</a></li>
 							{% else %}
 								<li><a href="/uesr_profile">{{ username }}</a></li>
-								<li><a href="/logout">Log out</a></li> 
+								<li><a href="/logout">Logout</a></li> 
 							{% endif %}
 							
 						</ul>
@@ -49,7 +49,7 @@
 								{% if isAuthenticated == True %}
 								<p>item</p>
 								{% else %}
-								<p>{{ name }}</p>
+								<p>name</p>
 								{% endif %}
 							</div>
 							<div class="dot-navbar dot-fillup">
@@ -70,6 +70,41 @@
 			</div>
 		</div>
 
+		<footer>
+			<table id="footer-bar" style="width:100%" cellspacing="0" cellpadding="0">
+				<tr >
+					<td id="footer-button">
+						<ul >
+							<li><a href="">About</a></li>
+							<li><a href="">Advertising</a></li>
+							<li><a href="">Contact us</a></li>
+							<li><a href="">API</a></li>
+						</ul>
+					</td>
+					<td id="footer-icon">
+						<ul>
+							<li><a href="" target="_blank">
+								<img src="static/images/instagram.png" style="width:32px;height:32px"/>
+								</a>
+							</li>
+							<li><a href="" target="_blank">
+								<img src="static/images/github.png" style="width:32px;height:32px"/>
+								</a>
+							</li>
+							<li><a href="" target="_blank">
+								<img src="static/images/email.png" style="width:32px;height:32px"/>
+								</a>
+							</li>
+						</ul>
+					</td>
+				</tr>
+				<tr style="border-collapse:collapse">
+					<td id="copyright" colspan="2">
+						<h3>&copy;  Foodiepedia 2014</h3>
+					</td>
+				</tr>
+			</table>
+		</footer><!-- End of footer -->
 	</body>
 </html>
 

@@ -5,7 +5,7 @@ import string
 import hashlib
 from string import letters
 
-import handlers.user.user
+import webapp2_extras.appengine.auth.models as auth_models
 
 import webapp2
 from webapp2_extras import auth
@@ -70,23 +70,8 @@ class BaseHandler(webapp2.RequestHandler):
 	def get_current_username(self):
 		# PROBLEM: CANNOT FIND CURRENT USER'S NAME
 		u = self.auth.get_user_by_session()
-		userid = u['user_id']
-		username = auth_models.User.get_by_auth_id(str(u['user_id']))
-		if username is None:
-			username = ''
-
-		return username
-
-		
-	def dispatch(self):
-		"""
-			Save the sessions for preservation across requests
-		"""
-		try:
-			response = super(BaseHandler, self).dispatch()
-			self.response.write(response)
-		finally:
-			self.session_store.save_sessions(self.response)
+		user = auth_models.User.get_by_id(u['user_id'])
+		return user.name
  
 	@webapp2.cached_property
 	def auth(self):
@@ -134,9 +119,10 @@ class Post_item(BaseHandler):
 	def post(self):
 		item_name = self.request.get('item_name')
 		item_description = self.request.get('item_description')
+		item_photo_link = self.request.get('item_photo_link')
 
 		if item_name and item_description:
-			i = Item(item_name=item_name, item_description=item_description)
+			i = Item(item_name=item_name, item_description=item_description, item_photo_link=item_photo_link)
 			i_key = i.put()
 
 			self.redirect("/item/%d" % i_key.id())
@@ -159,8 +145,14 @@ class PostShowPage(BaseHandler):
 
 class Permalink(PostShowPage):
 	def get(self, item_id):
+		isAuthenticated = self.check_authenticated
+		username = ''
+		if isAuthenticated:
+			# get_current_username CANNOT FUNCTION 
+			username = self.get_current_username()
+
 		s = Item.get_by_id(int(item_id))
-		self.render("show_item.html", items=[s])
+		self.render("show_item.html", items=[s], isAuthenticated=isAuthenticated, username=username)
 
 ################################################################################################
 #                Find(search) page Handler	 				  	                               #
@@ -171,8 +163,7 @@ class Find(BaseHandler):
 		username = ''
 		if isAuthenticated:
 			# get_current_username CANNOT FUNCTION 
-			# username = self.get_current_username()
-			username = 'show_username'
+			username = self.get_current_username()
 		self.render('find.html', isAuthenticated=isAuthenticated, username=username)
 
 	def post(self, item_name="", item_description="", item_photo_link="", error=""):
