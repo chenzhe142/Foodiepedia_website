@@ -72,6 +72,19 @@ class BaseHandler(webapp2.RequestHandler):
 		u = self.auth.get_user_by_session()
 		user = auth_models.User.get_by_id(u['user_id'])
 		return user.name
+
+	def dispatch(self):
+		"""
+			Save the sessions for preservation across requests
+		"""
+		self.session_store = sessions.get_store(request=self.request)
+		try:
+			# response = super(BaseHandler, self).dispatch()
+			# self.response.write(response)
+			webapp2.RequestHandler.dispatch(self)
+		finally:
+			
+			self.session_store.save_sessions(self.response)
  
 	@webapp2.cached_property
 	def auth(self):
@@ -142,7 +155,8 @@ class Post_item(BaseHandler):
 			i = Item(item_name=item_name, item_description=item_description, item_photo_link=item_photo_link)
 			i_key = i.put()
 
-			self.redirect("/item/%d" % i_key.id())
+			# self.redirect("/item/%d" % i_key.id())
+			self.redirect("/item/%s" % i_key.item_name)
 		else:
 			error = "please enter both item name and item description!"
 			self.render('post_item.html',item_name=item_name, 
@@ -165,19 +179,24 @@ class PostShowPage(BaseHandler):
 		#handle html content
 		self.render_post_show();
 
-class Permalink(PostShowPage):
-	def get(self, item_id):
+class ItemPermalink(PostShowPage):
+	# def get(self, item_id):
+	def get(self, item_name):
 		isAuthenticated = self.check_authenticated()
 		username = ''
 		if isAuthenticated:
 			# get_current_username CANNOT FUNCTION 
 			username = self.get_current_username()
 
-		s = Item.get_by_id(int(item_id))
-		self.render("show_item.html", items=[s], isAuthenticated=isAuthenticated, username=username)
+		items = db.GqlQuery("SELECT * FROM Item WHERE item_name=:1", item_name)
+		self.render("show_item.html", items=items, isAuthenticated=isAuthenticated, username=username)
+
+		# s = Item.get_by_id(int(item_id))
+		# self.render("show_item.html", items=[s], isAuthenticated=isAuthenticated, username=username)
 
 ################################################################################################
 #                Find(search) page Handler	 				  	                               #
+#                #need to redirect to item page 											   #
 ################################################################################################
 class Find(BaseHandler):
 	def get(self):
@@ -185,19 +204,38 @@ class Find(BaseHandler):
 		isAuthenticated = self.check_authenticated()
 		username = ''
 		if isAuthenticated:
-			# get_current_username CANNOT FUNCTION 
 			username = self.get_current_username()
+
 		self.render('find.html', isAuthenticated=isAuthenticated, username=username, page_title=page_title)
 
-	def post(self, item_name="", item_description="", item_photo_link="", error=""):
+	def post(self):
 		item_name = self.request.get('item_name')
-		items = db.GqlQuery("SELECT * FROM Item WHERE item_name=:1", item_name)
-		page_title = item_name + ' | Foodiepedia'
-		self.render("show_item.html", item_name=item_name, 
-					item_description=item_description, 
-					item_photo_link=item_photo_link, 
-					error=error, items=items, page_title=page_title)
+		if not item_name:
+			#if user's input is empty, let's try redirect to homepage
+			self.redirect('/')
+		else:
+			#if we have an input, try to redirect to result page
+			self.redirect("/find/result/%s" % item_name)
 
-
+################################################################################################
+#                FindPermalink Handler	 				  	                               	   #
+################################################################################################
+# redirect to result page																	   #
+# Search algorithm needs to be re-designed 													   #
+################################################################################################
+class FindPermalink(PostShowPage):
+	# def get(self, item_id):
+	def get(self, item_name):
+		isAuthenticated = self.check_authenticated()
+		username = ''
+		if isAuthenticated:
+			# get_current_username CANNOT FUNCTION 
+			username = self.get_current_username()
+		if item_name:
+			items = db.GqlQuery("SELECT * FROM Item WHERE item_name=:1", item_name)
+			self.render("show_item.html", items=items, isAuthenticated=isAuthenticated, username=username)
+		else:
+			if username == '':
+				self.render("popular_item.html", isAuthenticated=isAuthenticated, username=username)
 
 

@@ -19,6 +19,9 @@ from webapp2_extras import sessions
 from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError
 
+from webapp2_extras.routes import RedirectRoute
+
+
 ################################################################################################
 #               SET UP jinja2 working path, BaseHandler function                               #
 ################################################################################################
@@ -39,7 +42,7 @@ class BaseHandler(webapp2.RequestHandler):
 		return t.render(params)
 
 	def render(self, template, **kw):
-		self.write(self.render_str(template, **kw))	
+		self.write(self.render_str(template, **kw))
 
 	def check_authenticated(self):
 		auth = self.auth
@@ -47,6 +50,7 @@ class BaseHandler(webapp2.RequestHandler):
 			isAuthenticated = False
 		else:
 			isAuthenticated = True
+
 		return isAuthenticated
 
 	def get_current_username(self):
@@ -54,6 +58,20 @@ class BaseHandler(webapp2.RequestHandler):
 		u = self.auth.get_user_by_session()
 		user = auth_models.User.get_by_id(u['user_id'])
 		return user.name
+
+
+	def dispatch(self):
+		"""
+			Save the sessions for preservation across requests
+		"""
+		self.session_store = sessions.get_store(request=self.request)
+		try:
+			# response = super(BaseHandler, self).dispatch()
+			# self.response.write(response)
+			webapp2.RequestHandler.dispatch(self)
+		finally:
+			
+			self.session_store.save_sessions(self.response)
  
 	@webapp2.cached_property
 	def auth(self):
@@ -62,6 +80,16 @@ class BaseHandler(webapp2.RequestHandler):
 	@webapp2.cached_property
 	def session_store(self):
 		return sessions.get_store(request=self.request)
+ 
+	@webapp2.cached_property
+	def auth_config(self):
+		"""
+			Dict to hold urls for login/logout
+		"""
+		return {
+			'login_url': self.uri_for('login'),
+			'logout_url': self.uri_for('logout')
+		}
 ################################################################################################
 #                set up Item database and query_string                                         #
 ################################################################################################
@@ -178,7 +206,8 @@ application = webapp2.WSGIApplication([('/', IndexHandler),
 
 
 									   ('/post_item', 'handlers.item.item_post_find.Post_item'),
-									   ('/item/(\d+)', 'handlers.item.item_post_find.Permalink')
+									   ('/item/(\S+)', 'handlers.item.item_post_find.ItemPermalink'),
+									   ('/find/result/(\S+)', 'handlers.item.item_post_find.FindPermalink')
 									   ], 
 									   config=config,
 									   debug=True)

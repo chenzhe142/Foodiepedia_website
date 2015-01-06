@@ -1,0 +1,49 @@
+.item_name_container {
+	text-align: center;
+	font-size: 40px;
+	font-style: bold;
+	padding-bottom: 40px;
+
+}
+
+.item_name {
+	display: initial;
+
+}
+
+.half_container {
+	width: 50%;
+	text-align: center;
+	height: 300px;
+
+}
+
+.half_left_container {
+	padding-right: 10px; 
+	padding-bottom: 10px;
+}
+
+.half_right_container {
+	padding-left: 10px;
+	padding-bottom: 10px;
+}
+
+.half_content {
+	background-color: #F3F3F3;
+	height: 300px;
+}
+
+.row {
+	width: 100%;
+}
+
+.whole_horizon_container {
+	width: 100%;
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+
+.whole_horizon_content {
+	background-color: #F3F3F3;
+	height: 300px;
+}

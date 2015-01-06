@@ -1,16 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-
-
 	<form>
 
 		{% for item in items %}
 			<div class="item">
-				<div class="item_name">{{ item.item_name }}</div>
-				<!-- <hr> -->
-				<div class="created_time">{{ item.created }}</div>
-				<p class="item_description">{{ item.item_description }}</p>
-				<div class="item_photo_link">{{ item.item_photo_link }}</div>
+				<div class="item_name_container">
+					<div class="item_name">{{ item.item_name }}</div>
+				</div>
+
+				<div class="row">
+					<div class="half_container">
+						<div class="half_left_container">
+							<div class="half_content">
+								<div class="item_description">{{ item.item_description }}</div>
+							</div>
+						</div>
+					</div>
+					<div class="half_container">
+						<div class="half_right_container">
+							<div class="half_content">
+								<div class="item_tag_container"></div>
+								<div class="item_contributer_container"></div>
+								<div class="created_time">{{ item.created }}</div>
+								<div class="item_photo_link">{{ item.item_photo_link }}</div>
+							</div>
+
+						</div>
+					</div>
+				</div><!-- end of row -->
+
+				<div class="row">
+					<div class="whole_horizon_container">
+						<div class="whole_horizon_content">
+							<div class="item_recipe">this block is for recipe</div>
+						</div>
+					</div>
+				</div>
+
+
+
+
+				
+				
+				
 			</div>
 		{% endfor %}
 	</form>
