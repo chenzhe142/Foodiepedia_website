@@ -19,3 +19,11 @@ http://foodie-pedia.appspot.com/
 - 'Find' page now can do a simple search on Datastore Item. Modification need to be done.
 - Available now: user can signup, login, and then post new items when user is maintaining login status.
 - Homepage UI and coloring need re-design.
+
+2015.1.5
+- When doing search on 'Find' page, if there's a result, redirect to item page. If empty input, redirect to homepage.
+  (Upcoming modification: if no result or empty input, show popular item page.)
+- Wrote part of the CSS code of show_item.html page, using flat design. Color will need to be re-considered.
+- Fixed small bugs of BaseHandler.dispatch, stop showing 'None' on the bottom of every page.
+- In home page, I added links for every item's name, and it can jump to the item page.
+
