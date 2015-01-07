@@ -199,6 +199,16 @@ class ItemPermalink(PostShowPage):
 #                Find(search) page Handler	 				  	                               #
 #                #need to redirect to item page 											   #
 ################################################################################################
+
+#####################################
+#Present:							#
+#	valid item_name: letters 		#
+#Future: more letters, characters 	#
+#####################################
+ITEM_NAME_RE = re.compile(r"^[a-zA-Z0-9]$")
+def valid_item_name(item_name):
+	return item_name and ITEM_NAME_RE.match(item_name)
+
 class Find(BaseHandler):
 	def get(self):
 		page_title = 'Find | Foodiepedia'
@@ -210,16 +220,20 @@ class Find(BaseHandler):
 		self.render('find.html', isAuthenticated=isAuthenticated, username=username, page_title=page_title)
 
 	def post(self):
-		item_name = str(self.request.get('item_name'))
-		
-		#########################
-		#ISSUE: escape item_name#
-		#########################
+		item_name = self.request.get('item_name')
+		#validate user's input
+		error = ""
+		if not valid_item_name(item_name):
+			error = "Please enter a valid keyword."
+			self.render('find.html', error=error)
+			
 		if not item_name:
 			#if user's input is empty, let's try redirect to homepage
 			self.redirect('/')
 		else:
-			#if we have an input, try to redirect to result page
+
+
+			#if we have a valid input, try to redirect to result page
 			item_name = item_name.replace(" ", "-")
 			self.redirect("/find/result/%s" % item_name)
 
