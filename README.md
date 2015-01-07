@@ -28,3 +28,6 @@ http://foodie-pedia.appspot.com/
 - In home page, I added links for every item's name, and it can jump to the item page.
   (There's a small bug appears when item name contains 'whitespace', I need to figure it out on linking and redirecting.)
 
+2015.1.6
+- Fixed: links contain 'whitespace', replacing whitespace with '-'. 
+
