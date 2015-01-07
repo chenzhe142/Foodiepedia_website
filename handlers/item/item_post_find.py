@@ -188,6 +188,7 @@ class ItemPermalink(PostShowPage):
 			# get_current_username CANNOT FUNCTION 
 			username = self.get_current_username()
 
+		item_name = item_name.replace("-", " ")
 		items = db.GqlQuery("SELECT * FROM Item WHERE item_name=:1", item_name)
 		self.render("show_item.html", items=items, isAuthenticated=isAuthenticated, username=username)
 
@@ -209,12 +210,17 @@ class Find(BaseHandler):
 		self.render('find.html', isAuthenticated=isAuthenticated, username=username, page_title=page_title)
 
 	def post(self):
-		item_name = self.request.get('item_name')
+		item_name = str(self.request.get('item_name'))
+		
+		#########################
+		#ISSUE: escape item_name#
+		#########################
 		if not item_name:
 			#if user's input is empty, let's try redirect to homepage
 			self.redirect('/')
 		else:
 			#if we have an input, try to redirect to result page
+			item_name = item_name.replace(" ", "-")
 			self.redirect("/find/result/%s" % item_name)
 
 ################################################################################################
@@ -228,14 +234,20 @@ class FindPermalink(PostShowPage):
 	def get(self, item_name):
 		isAuthenticated = self.check_authenticated()
 		username = ''
+		item_name = item_name.replace("-", " ")
+
+		page_title = 'Result | Foodiepedia'
+
 		if isAuthenticated:
 			# get_current_username CANNOT FUNCTION 
 			username = self.get_current_username()
 		if item_name:
 			items = db.GqlQuery("SELECT * FROM Item WHERE item_name=:1", item_name)
-			self.render("show_item.html", items=items, isAuthenticated=isAuthenticated, username=username)
+			self.render("show_item.html", items=items, 
+						isAuthenticated=isAuthenticated, username=username, page_title=page_title)
 		else:
-			if username == '':
-				self.render("popular_item.html", isAuthenticated=isAuthenticated, username=username)
+			if items == '':
+				self.render("popular_item.html", 
+							isAuthenticated=isAuthenticated, username=username, page_title=page_title)
 
 

@@ -3,6 +3,7 @@ import jinja2
 import webapp2
 
 import time
+import urllib2
 import webapp2_extras.appengine.auth.models as auth_models
 
 import sys
@@ -106,6 +107,7 @@ class IndexHandler(BaseHandler):
 	def render_index_item(self, page_title="", username="", isAuthenticated=""):
 		items = db.GqlQuery("SELECT * FROM Item")
 		user_profile_link = '/' + username
+		
 		self.render('index.html', page_title=page_title, username=username, isAuthenticated=isAuthenticated,
 					items=items, user_profile_link=user_profile_link)
 
