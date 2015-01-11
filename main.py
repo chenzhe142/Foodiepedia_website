@@ -26,7 +26,7 @@ from webapp2_extras.routes import RedirectRoute
 ################################################################################################
 #               SET UP jinja2 working path, BaseHandler function                               #
 ################################################################################################
-template_dir = os.path.join(os.path.dirname(__file__),'templates','index')
+template_dir = os.path.join(os.path.dirname(__file__),'templates','main')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
  
 class BaseHandler(webapp2.RequestHandler):
@@ -105,11 +105,10 @@ class Item(db.Model):
 ################################################################################################
 class IndexHandler(BaseHandler):
 	def render_index_item(self, page_title="", username="", isAuthenticated=""):
-		items = db.GqlQuery("SELECT * FROM Item")
 		user_profile_link = '/' + username
 		
 		self.render('index.html', page_title=page_title, username=username, isAuthenticated=isAuthenticated,
-					items=items, user_profile_link=user_profile_link)
+					 user_profile_link=user_profile_link)
 
 	def get(self):
 		page_title = 'Foodiepedia'
@@ -120,6 +119,7 @@ class IndexHandler(BaseHandler):
 			username = self.get_current_username()
 
 		self.render_index_item(username=username, isAuthenticated=isAuthenticated, page_title=page_title)
+
 
 ################################################################################################
 #                About Handler	 				  	                                           #

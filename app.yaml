@@ -18,6 +18,9 @@ handlers:
   static_dir: stylesheets
   mime_type: text/css
 
+- url: /js
+  static_dir: js
+
 
 - url: /.*
   script: main.application
