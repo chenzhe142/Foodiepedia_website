@@ -31,3 +31,9 @@ http://foodie-pedia.appspot.com/
 2015.1.6
 - Fixed: links contain 'whitespace', replacing whitespace with '-'. 
 
+2015.1.11
+- Implemented dot navigation in index page.
+- Modified header navigation bar with Bootstrap and jQuery.
+- Added responsive design in website design. When using mobile devices visiting 'Foodiepedia', the dot navigation bar and header   navigation bar are folded. You can click the button to unfold the menu.
+
+
