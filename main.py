@@ -180,6 +180,21 @@ class ApiHandler(BaseHandler):
 
 
 ################################################################################################
+#                Discover Handler	 				  	                                       #
+################################################################################################
+class Discover(BaseHandler):
+	def get(self):
+		page_title = 'Discover | Foodiepedia'
+
+		isAuthenticated = self.check_authenticated()
+		username = ''
+		if isAuthenticated:
+			username = self.get_current_username()
+
+		self.render('api.html', username=username, isAuthenticated=isAuthenticated, page_title=page_title)
+
+
+################################################################################################
 #                Config information 	 				                                       #
 ################################################################################################
 config = {
@@ -203,7 +218,8 @@ application = webapp2.WSGIApplication([('/', IndexHandler),
 									   webapp2.Route(r'/login', handler='handlers.user.user.SecureRequestHandler', name='secure'),
 									   ('/signup', 'handlers.user.user.CreateUserHandler'),
 
-									   ('/discover','handlers.discover.discover.Discover'),
+									   # ('/discover','handlers.discover.discover.Discover'),
+									   ('/discover', Discover),
 									   ('/find', 	  'handlers.item.item_post_find.Find'),
 
 
