@@ -7,11 +7,7 @@ threadsafe: true
 handlers:
 - url: /static/images
   static_dir: static/images
-  mime_type: image/png
-
-# - url: /images/(.*)
-#   static_files: static/images/\1
-#   upload: static/images/.*
+  # mime_type: image/png
 
 
 - url: /stylesheets

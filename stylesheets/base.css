@@ -71,6 +71,37 @@
 /*-----------------------------------------*/
 /* Footer setting */
 /*-----------------------------------------*/
+.footer-social-link {
+	margin-bottom: 40px;
+	margin-top: 30px;
+}
+.footer-link ul li {
+	display: inline;
+	margin-right: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.footer-social ul li {
+	display: inline;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.footer-link {
+	/*background-color:lavender; */
+	padding-top: 9px;
+	padding-bottom: 9px
+}
+
+.footer-social {
+	text-align: center;
+	padding-top: 19px;
+	padding-bottom: 19px;
+	/*background-color:lavenderblush;*/
+}
+
 #footer-bar {
 	/*background: #F3F3F3;*/
 	background: linear-gradient(to bottom, #F3F3F3 0%,#ffffff 100%); 
@@ -105,52 +136,22 @@
 	border-bottom: 1px dotted #0B627D;
 }
 
-#footer-button {
-	text-align: center;
-}
-
-#footer-icon {
-	text-align: center;
-	/*height: 55px;*/
-}
-
-#footer-icon ul {
-	margin-top: 9px;
-	margin-bottom: 9px;
-}
-
-#footer-icon a {
-	text-decoration: none;
-	cursor: pointer;
-}
 
 
 #copyright {
-	text-align: center;
 	font-size: 14px;
+	padding-top: 14px;
 }
 /*-----------------------------------------*/
 /* container */
 /*-----------------------------------------*/
-.page-container {
-	width: 960px;
-	margin: auto;
-	margin-top: 40px;
-	height: 800px;
+.fill {
+	min-height: 100%;
+	height: 100%;
+	/*background-color: lavenderblush; */
 }
 
 
-
-/*-----------------------------------------*/
-/*table setting*/
-/*-----------------------------------------*/
-table, tr, td {
-	border: none;
-}
-
-table {
-	table-layout: fixed;
-}
 
 /*-----------------------------------------*/
 /*page setting*/
@@ -174,49 +175,4 @@ body {
 	margin-left: 0px;
 	margin-right: 0px;
 }
-.row {
-	display: flex;
-	flex-wrap: wrap;
-	width: : 100%;
-}
-.col-1 {
-	width: 8.33%
-}
-.col-2 {
-	width: 16.66%
-}
-.col-3 {
-	width: 25%
-}
-.col-4 {
-	width: 33.33%
-}
-.col-5 {
-	width: 41.66%
-}
-.col-6 {
-	width: 50%
-}
-.col-7 {
-	width: 58.33%
-}
-.col-8 {
-	width: 66.66%
-}
-.col-9 {
-	width: 75%
-}
-.col-10 {
-	width: 83.33%
-}
-.col-11 {
-	width: 91.66%
-}
-.col-12 {
-	width: 100%
-}
 
-.vertical-container {
-	margin-left: 8.33%;
-	margin-right: 8.33%
-}

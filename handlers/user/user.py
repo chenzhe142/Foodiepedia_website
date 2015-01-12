@@ -108,22 +108,36 @@ class LoginHandler(BaseHandler):
 			self.render("login.html", page_title=page_title)
  
 	def post(self):
-		"""
-			username: Get the username from POST dict
-			password: Get the password from POST dict
-		"""
 		username = self.request.POST.get('username')
 		password = self.request.POST.get('password')
+
+		page_title = 'Login | Foodiepedia'
 		# Try to login user with password
 		# Raises InvalidAuthIdError if user is not found
 		# Raises InvalidPasswordError if provided password doesn't match with specified user
-		try:
-			self.auth.get_user_by_password(username, password)
-			self.redirect('/')
-		except (InvalidAuthIdError, InvalidPasswordError), e:
-			# Returns error message to self.response.write in the BaseHandler.dispatcher
-			# Currently no message is attached to the exceptions
-			return e
+		have_error = False
+
+		params = dict(page_title=page_title, username=username)
+
+		if not valid_username(username):
+			params['error_username'] = "That's not a valid username."
+			have_error = True
+
+		if not valid_password(password):
+			params['error_password'] = "That wasn't a valid password."
+			have_error = True
+
+		if have_error:
+			self.render('login.html', **params)
+		else:	
+			try:
+				self.auth.get_user_by_password(username, password)
+				self.redirect('/')
+			except (InvalidAuthIdError, InvalidPasswordError), e:
+				# Returns error message to self.response.write in the BaseHandler.dispatcher
+				# Currently no message is attached to the exceptions
+				params['error_password'] = 'Password not match.'
+				self.render('login.html', **params)
 
 ################################################################################################
 #              Create User Handler 									                           #
