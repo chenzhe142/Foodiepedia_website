@@ -2,7 +2,8 @@ A website based on Google App Engine, webapp2 and Jinja2.
 Foodiepedia
 ===================
 http://foodie-pedia.appspot.com/
-
+Library: jQuery, Bootstrap, Modernizr, Webapp2, Jinja2
+Reference: index dot navigation (from CodyHouse)
 
 
 2014.12.30
