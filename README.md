@@ -7,7 +7,7 @@ Library: jQuery, Bootstrap, Modernizr, Webapp2, Jinja2
 
 Reference: index dot navigation (from CodyHouse)
 
-
+===================
 2014.12.30
 - Testing user authentication function.
 
