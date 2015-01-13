@@ -22,7 +22,6 @@
 	<!-- Bootstrap end -->
 
 
-
 	<link rel="stylesheet" href="/stylesheets/reset.css"><!-- CSS reset -->
 	<link rel="stylesheet" href="/stylesheets/main_dotnav_style.css"> <!-- Resource style -->
 	<script src="js/modernizr.js"></script> <!-- Modernizr -->
@@ -62,7 +61,14 @@
 					        <li><a href="/signup"><span></span> Sign Up</a></li>
 					        <li><a href="/login"><span></span> Login</a></li>
 						{% else %}
-							<li><a href="{{ user_profile_link }}"><span>{{ username }}</span></a></li>
+							<!-- <li><a href="{{ user_profile_link }}"><span>{{ username }}</span></a></li> -->
+							<li class="dropdown">
+					          	<a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ username }}<span class="caret"></span></a>
+					          	<ul class="dropdown-menu">
+					            	<li><a href="{{ user_profile_link }}">My Homepage</a></li>
+					            	<li><a href="#">Edit Profile</a></li>
+					          	</ul>
+					        </li>
 					        <li><a href="/logout"><span>Logout</span></a></li>
 						{% endif %}
 					</ul>

@@ -151,7 +151,17 @@
 	/*background-color: lavenderblush; */
 }
 
+#find_form {
+	margin-top: 50px;
+}
 
+.container-top-margin {
+	margin-top:3%;
+}
+
+.container-bottom-margin {
+	margin-bottom: 3%;
+}
 
 /*-----------------------------------------*/
 /*page setting*/
