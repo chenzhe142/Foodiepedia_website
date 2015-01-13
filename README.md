@@ -39,4 +39,7 @@ Reference: index dot navigation (from CodyHouse)
 - Modified header navigation bar with Bootstrap and jQuery.
 - Added responsive design in website design. When using mobile devices visiting 'Foodiepedia', the dot navigation bar and header   navigation bar are folded. You can click the button to unfold the menu.
 
-
+2015.1.12
+- Added User dropdown menu in navbar, 'post item' button is available now.
+- Simplified part of the authentication code.
+- Adjusted page UI design, better view on mobile devices.
