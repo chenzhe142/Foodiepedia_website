@@ -46,7 +46,6 @@ class BaseHandler(webapp2.RequestHandler):
 
 		return isAuthenticated
 
-
 	def dispatch(self):
 		"""
 			Save the sessions for preservation across requests

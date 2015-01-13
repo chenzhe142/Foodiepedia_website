@@ -73,6 +73,25 @@ class BaseHandler(webapp2.RequestHandler):
 		user = auth_models.User.get_by_id(u['user_id'])
 		return user.name
 
+	def get_user_profile_link(self, username):
+		user_profile_link = '/user/' + username
+		return user_profile_link
+
+	def get_navbar_status(self):
+		isAuthenticated = False
+		isAuthenticated = self.check_authenticated()
+
+		params = dict(isAuthenticated=isAuthenticated)
+
+		if not isAuthenticated:
+			return params;
+		else:
+			params['username'] = self.get_current_username()
+			params['user_profile_link'] = self.get_user_profile_link(params['username'])
+			return params;
+
+	########################################################
+
 	def dispatch(self):
 		"""
 			Save the sessions for preservation across requests
@@ -117,80 +136,82 @@ class Item(db.Model):
 #                           Post-item handlers                                                 #
 ################################################################################################
 class Post_item(BaseHandler):
-	def render_post(self, item_name="", item_description="", item_photo_link="", error=""):
-		page_title = 'Post | Foodiepedia'
-		items = db.GqlQuery("SELECT * FROM Item ORDER BY created DESC")
-
-		isAuthenticated = False
-		isAuthenticated = self.check_authenticated()
-
-		if not isAuthenticated:
-			self.redirect('/')
-		else:
-			username = self.get_current_username()
-			self.render("post_item.html", item_name=item_name, 
-										  item_description=item_description, 
-									  	  item_photo_link=item_photo_link, 
-										  error=error, items=items, page_title=page_title)
-
 	def get(self):
 		page_title = 'Post | Foodiepedia'
-		isAuthenticated = False
-		isAuthenticated = self.check_authenticated()
-		if not isAuthenticated:
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
+		
+		if not params['isAuthenticated']:
 			self.redirect('/')
 		else:
-			username = self.get_current_username()
-			self.render('post_item.html',page_title=page_title,username=username)
+			self.render('post_item.html', **params)
 
 	def post(self):
 		item_name = self.request.get('item_name')
 		item_description = self.request.get('item_description')
 		item_photo_link = self.request.get('item_photo_link')
 
-		username = self.get_current_username()
+		
 		page_title = 'Post | Foodiepedia'
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
 
-		if item_name and item_description:
-			i = Item(item_name=item_name, item_description=item_description, item_photo_link=item_photo_link)
-			i_key = i.put()
-
-			# self.redirect("/item/%d" % i_key.id())
-			self.redirect("/item/%s" % i_key.item_name)
+		params['item_name'] = item_name
+		params['item_description'] = item_description
+		params['item_photo_link'] = item_photo_link
+		
+		if not params['isAuthenticated']:
+			self.redirect('/')
 		else:
-			error = "please enter both item name and item description!"
-			self.render('post_item.html',item_name=item_name, 
-										item_description=item_description,
-										item_photo_link=item_photo_link, 
-										error=error, username=username,
-										page_title=page_title)
+			if item_name and item_description:
+				i = Item(item_name=item_name, item_description=item_description, item_photo_link=item_photo_link)
+				i_key = i.put()
+
+				# self.redirect("/item/%d" % i_key.id())
+				self.redirect("/item/%s" % i.item_name)
+			else:
+				params['error'] = "please enter both item name and item description!"
+
+				self.render('post_item.html', **params)
 
 class PostShowPage(BaseHandler):
 	def render_post_show(self, item_name="", item_description="", item_photo_link="", error=""):
 		items = db.GqlQuery("SELECT * FROM Item ORDER BY created DESC")
 		page_title = item_name + ' | Foodiepedia'
 
-		self.render("show_item.html", item_name=item_name, 
-					item_description=item_description, 
-					item_photo_link=item_photo_link, 
-					error=error, items=items, page_title=page_title)
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
+
+		params['item_name'] = item_name
+		params['item_description'] = item_description
+		params['item_photo_link'] = item_photo_link
+		params['error'] = error
+		params['items'] = items
+
+		self.render("show_item.html", **params)
 
 	def get(self):
 		#handle html content
 		self.render_post_show();
 
 class ItemPermalink(PostShowPage):
-	# def get(self, item_id):
 	def get(self, item_name):
-		isAuthenticated = self.check_authenticated()
-		username = ''
-		if isAuthenticated:
-			# get_current_username CANNOT FUNCTION 
-			username = self.get_current_username()
+		
+		params = dict()
+		params = self.get_navbar_status()
+		
 
 		item_name = item_name.replace("-", " ")
 		items = db.GqlQuery("SELECT * FROM Item WHERE item_name=:1", item_name)
-		self.render("show_item.html", items=items, isAuthenticated=isAuthenticated, username=username)
+		params['items'] = items
+
+		page_title = item_name + ' | Foodiepedia'
+		params['page_title'] = page_title
+
+		self.render("show_item.html", **params)
 
 		# s = Item.get_by_id(int(item_id))
 		# self.render("show_item.html", items=[s], isAuthenticated=isAuthenticated, username=username)
@@ -212,12 +233,11 @@ def valid_item_name(item_name):
 class Find(BaseHandler):
 	def get(self):
 		page_title = 'Find | Foodiepedia'
-		isAuthenticated = self.check_authenticated()
-		username = ''
-		if isAuthenticated:
-			username = self.get_current_username()
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
 
-		self.render('find.html', isAuthenticated=isAuthenticated, username=username, page_title=page_title)
+		self.render('find.html', **params)
 
 	def post(self):
 		item_name = self.request.get('item_name')
@@ -246,22 +266,19 @@ class Find(BaseHandler):
 class FindPermalink(PostShowPage):
 	# def get(self, item_id):
 	def get(self, item_name):
-		isAuthenticated = self.check_authenticated()
-		username = ''
 		item_name = item_name.replace("-", " ")
 
 		page_title = 'Result | Foodiepedia'
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
 
-		if isAuthenticated:
-			# get_current_username CANNOT FUNCTION 
-			username = self.get_current_username()
 		if item_name:
 			items = db.GqlQuery("SELECT * FROM Item WHERE item_name=:1", item_name)
-			self.render("show_item.html", items=items, 
-						isAuthenticated=isAuthenticated, username=username, page_title=page_title)
+			params['items'] = items
+			self.render("show_item.html", **params)
 		else:
 			if items == '':
-				self.render("popular_item.html", 
-							isAuthenticated=isAuthenticated, username=username, page_title=page_title)
+				self.render("popular_item.html", **params)
 
 

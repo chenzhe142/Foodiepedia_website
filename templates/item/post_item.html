@@ -1,29 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container-fluid fill">
-				<form method="post">
-					<label>
-						<div>item name</div>
-						<input type="text" name="item_name" value="{{ item_name }}">
-					</label>
+	<div class="container container-top-margin">
+		<div class="row" style="text-align:center">
+			<h2>Post item</h2>
+		</div>
+		<div class="row">
+				<form method="post" role="form">
+					<div class="form-group">
+						<label for="item_name">Item name</label>
+						<input type="text" class="form-control" id="item_name" name="item_name" value="{{ item_name }}">
+					</div>
+					
+					<div class="form-group">
+						<label for="item_photo_link">Item photo link</label>
+						<input type="url" class="form-control" id="item_photo_link" name="item_photo_link" value="{{ item_photo_link }}">
+					</div>
 
-					<label>
-						<div>photo link</div>
-						<input type="text" name="item_photo_link" value="{{ item_photo_link }}">
-					</label>
-
-					<label>
-						<div>description</div>
-						<textarea type="text" name="item_description">{{ item_description }}</textarea>
-					</label>
-
-
-
+					<div class="form-group">
+						<label for="item_description">Item description</label>
+						<textarea type="text" class="form-control" id="item_description" name="item_description" rows="3">{{ item_description }}</textarea>
+					</div>	
 					<div class="error">{{ error }}</div>
-
-					<input type="submit">
-
+					<button type="submit" class="btn btn-default">Submit</button>
 				</form>
+		</div>
+				
+	</div>
+				
 </div>
 
 {% endblock %}

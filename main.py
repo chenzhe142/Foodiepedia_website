@@ -60,6 +60,25 @@ class BaseHandler(webapp2.RequestHandler):
 		user = auth_models.User.get_by_id(u['user_id'])
 		return user.name
 
+	def get_user_profile_link(self, username):
+		user_profile_link = '/user/' + username
+		return user_profile_link
+
+	def get_navbar_status(self):
+		isAuthenticated = False
+		isAuthenticated = self.check_authenticated()
+
+		params = dict(isAuthenticated=isAuthenticated)
+
+		if not isAuthenticated:
+			return params;
+		else:
+			params['username'] = self.get_current_username()
+			params['user_profile_link'] = self.get_user_profile_link(params['username'])
+			return params;
+
+	########################################################
+
 
 	def dispatch(self):
 		"""
@@ -104,21 +123,14 @@ class Item(db.Model):
 #                Index page Handler	 				  	                                       #
 ################################################################################################
 class IndexHandler(BaseHandler):
-	def render_index_item(self, page_title="", username="", isAuthenticated=""):
-		user_profile_link = '/' + username
-		
-		self.render('index.html', page_title=page_title, username=username, isAuthenticated=isAuthenticated,
-					 user_profile_link=user_profile_link)
-
 	def get(self):
 		page_title = 'Foodiepedia'
 
-		isAuthenticated = self.check_authenticated()
-		username = ''
-		if isAuthenticated:
-			username = self.get_current_username()
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
 
-		self.render_index_item(username=username, isAuthenticated=isAuthenticated, page_title=page_title)
+		self.render('index.html', **params)
 
 
 ################################################################################################
@@ -128,12 +140,11 @@ class AboutHandler(BaseHandler):
 	def get(self):
 		page_title = 'About | Foodiepedia'
 
-		isAuthenticated = self.check_authenticated()
-		username = ''
-		if isAuthenticated:
-			username = self.get_current_username()
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
 
-		self.render('about.html', username=username, isAuthenticated=isAuthenticated, page_title=page_title)
+		self.render('about.html', **params)
 
 ################################################################################################
 #                Advertising Handler	 				  	                                   #
@@ -142,12 +153,11 @@ class AdvertisingHandler(BaseHandler):
 	def get(self):
 		page_title = 'Advertising | Foodiepedia'
 
-		isAuthenticated = self.check_authenticated()
-		username = ''
-		if isAuthenticated:
-			username = self.get_current_username()
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
 
-		self.render('advertising.html', username=username, isAuthenticated=isAuthenticated, page_title=page_title)
+		self.render('advertising.html', **params)
 
 
 ################################################################################################
@@ -157,12 +167,11 @@ class ContactUsHandler(BaseHandler):
 	def get(self):
 		page_title = 'Contact us | Foodiepedia'
 
-		isAuthenticated = self.check_authenticated()
-		username = ''
-		if isAuthenticated:
-			username = self.get_current_username()
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
 
-		self.render('contact_us.html', username=username, isAuthenticated=isAuthenticated, page_title=page_title)
+		self.render('contact_us.html', **params)
 
 ################################################################################################
 #                API Handler	 				  	                                           #
@@ -171,12 +180,11 @@ class ApiHandler(BaseHandler):
 	def get(self):
 		page_title = 'API | Foodiepedia'
 
-		isAuthenticated = self.check_authenticated()
-		username = ''
-		if isAuthenticated:
-			username = self.get_current_username()
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
 
-		self.render('api.html', username=username, isAuthenticated=isAuthenticated, page_title=page_title)
+		self.render('api.html', **params)
 
 
 ################################################################################################
@@ -186,12 +194,11 @@ class Discover(BaseHandler):
 	def get(self):
 		page_title = 'Discover | Foodiepedia'
 
-		isAuthenticated = self.check_authenticated()
-		username = ''
-		if isAuthenticated:
-			username = self.get_current_username()
+		params = dict()
+		params = self.get_navbar_status()
+		params['page_title'] = page_title
 
-		self.render('api.html', username=username, isAuthenticated=isAuthenticated, page_title=page_title)
+		self.render('about.html', **params)
 
 
 ################################################################################################
@@ -217,6 +224,7 @@ application = webapp2.WSGIApplication([('/', IndexHandler),
 									   webapp2.Route(r'/logout', handler='handlers.user.user.LogoutHandler', name='logout'),
 									   webapp2.Route(r'/login', handler='handlers.user.user.SecureRequestHandler', name='secure'),
 									   ('/signup', 'handlers.user.user.CreateUserHandler'),
+									   ('/user/(\S+)', 'handlers.user.user.UserProfileHandler'),
 
 									   # ('/discover','handlers.discover.discover.Discover'),
 									   ('/discover', Discover),
@@ -225,6 +233,7 @@ application = webapp2.WSGIApplication([('/', IndexHandler),
 
 									   ('/post_item', 'handlers.item.item_post_find.Post_item'),
 									   ('/item/(\S+)', 'handlers.item.item_post_find.ItemPermalink'),
+
 									   ('/find/result/(\S+)', 'handlers.item.item_post_find.FindPermalink')
 									   ], 
 									   config=config,
