@@ -43,3 +43,6 @@ Reference: index dot navigation (from CodyHouse)
 - Added User dropdown menu in navbar, 'post item' button is available now.
 - Simplified part of the authentication code.
 - Adjusted page UI design, better view on mobile devices.
+
+2015.1.14
+- Added hover dropdown on navigation bar.
