@@ -6,6 +6,8 @@ import re
 import string
 from string import letters
 
+import webapp2_extras.appengine.auth.models as auth_models
+
 from webapp2_extras import auth
 from webapp2_extras import sessions
 from webapp2_extras.auth import InvalidAuthIdError
@@ -45,6 +47,31 @@ class BaseHandler(webapp2.RequestHandler):
 			isAuthenticated = True
 
 		return isAuthenticated
+
+	def get_current_username(self):
+		# PROBLEM: CANNOT FIND CURRENT USER'S NAME
+		u = self.auth.get_user_by_session()
+		user = auth_models.User.get_by_id(u['user_id'])
+		return user.name
+
+	def get_user_profile_link(self, username):
+		user_profile_link = '/user/' + username
+		return user_profile_link
+
+	def get_navbar_status(self):
+		isAuthenticated = False
+		isAuthenticated = self.check_authenticated()
+
+		params = dict(isAuthenticated=isAuthenticated)
+
+		if not isAuthenticated:
+			return params;
+		else:
+			params['username'] = self.get_current_username()
+			params['user_profile_link'] = self.get_user_profile_link(params['username'])
+			return params;
+
+################################################################################################
 
 	def dispatch(self):
 		"""
@@ -221,5 +248,34 @@ class LogoutHandler(BaseHandler):
 			self.redirect('/')
 		except (AttributeError, KeyError), e:
 			return "User is logged out"
+
+################################################################################################
+#              UserProfileHandler Handler 	 									               #
+################################################################################################
+class UserProfileHandler(BaseHandler):
+	def get(self, username):
+		self_username = username
+		params = dict()
+		params = self.get_navbar_status();
+
+		page_title = params['username'] + ' | Foodiepedia'
+		params['page_title'] = page_title
+
+		if not params['isAuthenticated']:
+			self.redirect('/')
+		else:
+			if params['username'] != self_username:
+				self.redirect('/')
+			else:
+				self.render('user_profile.html', **params)
+
+# class UserProfilePermalink(UserProfileHandler):
+
+
+
+
+
+
+
 
 

@@ -69,6 +69,42 @@
 }
 
 /*-----------------------------------------*/
+/* Header navbar dropdown hover setting */
+/*-----------------------------------------*/
+.dropdown-menu .sub-menu {
+    left: 100%;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    margin-top: -1px;
+}
+
+.dropdown-menu {
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-right-width: 0px;
+}
+
+.nav-tabs .dropdown-menu, .nav-pills .dropdown-menu, .navbar .dropdown-menu {
+    margin-top: 0;
+}
+
+/*when a big device visits website, enable hover dropdown*/
+@media (min-width: 768px) {
+	.dropdown-menu li:hover .sub-menu {
+		visibility: visible;
+		}
+	}
+
+@media (min-width: 768px) {
+	.dropdown:hover .dropdown-menu {
+		display: block;
+		}
+	}
+
+
+/*-----------------------------------------*/
 /* Footer setting */
 /*-----------------------------------------*/
 .footer-social-link {
