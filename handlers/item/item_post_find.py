@@ -272,6 +272,7 @@ class FindPermalink(PostShowPage):
 		params = dict()
 		params = self.get_navbar_status()
 		params['page_title'] = page_title
+		params['find_item_name'] = item_name
 
 		if item_name:
 			items = db.GqlQuery("SELECT * FROM Item WHERE item_name=:1", item_name)
