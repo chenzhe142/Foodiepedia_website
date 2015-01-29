@@ -46,3 +46,9 @@ Reference: index dot navigation (from CodyHouse)
 
 2015.1.14
 - Added hover dropdown on navigation bar.
+
+2015.1.29
+- Begin writing "show_item.html" UI, and result page container.
+- Writing user comment function. Need to find out how to connect items with their comments.
+- In "Find" page, the search algorithm need modified. Is there any method to search database with part of the keyword? I'm not sure about this. Need to Google it!
+
